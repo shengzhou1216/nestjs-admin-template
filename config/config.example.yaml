@@ -1,0 +1,18 @@
+system:
+  host: localhost
+  port: 8080
+
+db:
+  postgres:
+    url: localhost
+    port: 5432
+    database: nestjs-admin-tpl
+    username: postgres
+    password: root
+
+jwt:
+  secret: secret
+  accessExpiresIn: 7d
+  refreshExpiresIn: 365d
+  resetPasswordExpiresIn: 7d
+  verifyEmailExpiresIn: 7d

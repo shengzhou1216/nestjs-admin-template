@@ -1,0 +1,95 @@
+import { BaseController } from '@app/common/controller/base.controller';
+import { User } from '@app/users/user.entity';
+import { UsersService } from '@app/users/users.service';
+import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
+import {
+  Query,
+  Get,
+  Controller,
+  Param,
+  Delete,
+  NotFoundException,
+  Body,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Permission } from '@app/permissions/decorators/permission.decorator';
+import { CreateUserDto } from '@app/users/dto/create-user.dto';
+import { plainToInstance } from 'class-transformer';
+import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
+
+/**
+ * Users controller
+ */
+@ApiTags('users')
+@Controller('users')
+export class UsersController extends BaseController<User, bigint> {
+  constructor(readonly service: UsersService) {
+    super(service);
+  }
+
+  /**
+   * create user
+   * @param createUserDto CreateUserDto
+   */
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.service.create(plainToInstance(User, createUserDto));
+  }
+
+  /**
+   * paginate users
+   * @param query
+   */
+  @Get()
+  async paginate(@Query() query: PaginateUserDto) {
+    return this.service.paginate(query);
+  }
+
+  /**
+   * get user by id
+   * @param id
+   */
+  @Get(':id')
+  async getById(@Param('id') id: bigint) {
+    const user = await this.service.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
+  /**
+   * delete user by id
+   * @param id
+   */
+  @Delete(':id')
+  @Permission({ name: 'delete user' })
+  async deleteById(@Param('id') id: bigint) {
+    await this.service.deleteById(id);
+  }
+
+  /**
+   * set user roles
+   * @param id
+   * @param setUserRolesDto
+   */
+  @Put(':id/roles')
+  @Permission({ name: 'set user roles' })
+  async setRoles(
+    @Param('id') id: bigint,
+    @Body() setUserRolesDto: SetUserRolesDto,
+  ) {
+    await this.service.setUserRoles(id, setUserRolesDto);
+  }
+
+  /**
+   * get user info
+   * @param id
+   */
+  @Get(':id/info')
+  async getInfo(@Param('id') id: bigint) {
+    return this.service.getUserInfoById(id);
+  }
+}

@@ -1,0 +1,24 @@
+system:
+  name: nestjs-admin-tpl
+  host: localhost
+  port: 3000
+
+db:
+  postgres:
+    host: localhost
+    port: 32767
+    database: nestjs-admin-tpl
+    username: postgres
+    password: root
+
+jwt:
+  secret: DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.
+  accessExpiresIn: 7d
+  refreshExpiresIn: 365d
+  resetPasswordExpiresIn: 7d
+  verifyEmailExpiresIn: 7d
+
+logger:
+  level: info
+  format: YYYY/MM/DD HH:mm:ss
+  file: logs/combined.log
