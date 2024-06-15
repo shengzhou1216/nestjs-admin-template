@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '@app/users/users.service';
-import { SaltUtil } from '@app/common/utils/salt.util';
-import { RegisterDto } from '@app/auth/dto/register.dto';
-import { User } from '@app/users/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import { AuthPayloadInterface } from '@app/auth/interfaces/auth-payload.interface';
 import { ConfigService } from '@nestjs/config';
-import JwtConfig from '@app/config/jwt.config';
+import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
+
+import { RegisterDto } from '@app/auth/dto/register.dto';
+import { AuthPayloadInterface } from '@app/auth/interfaces/auth-payload.interface';
+import { SaltUtil } from '@app/common/utils/salt.util';
+import JwtConfig from '@app/config/jwt.config';
+import { User } from '@app/users/user.entity';
+import { UsersService } from '@app/users/users.service';
 
 @Injectable()
 export class AuthService {

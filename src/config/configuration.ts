@@ -1,7 +1,8 @@
 import { readFileSync } from 'fs';
-import * as yaml from 'js-yaml';
 import { join } from 'path';
-import * as Joi from 'joi';
+
+import Joi from 'joi';
+import * as yaml from 'js-yaml';
 
 const env = process.env.NODE_ENV || 'development';
 

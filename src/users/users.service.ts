@@ -4,21 +4,20 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { BaseService } from '@app/core/service/base.service';
-import { User } from '@app/users/user.entity';
-import { IUserService } from './users.service.interface';
-import { ILike, ObjectLiteral, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
+import { ILike, ObjectLiteral, Repository } from 'typeorm';
+
 import { Pagination } from '@app/common/pagination/pagination';
-import { RolesService } from '@app/roles/roles.service';
 import { SaltUtil } from '@app/common/utils/salt.util';
-import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
-import { UserInfoVo } from '@app/users/vo/user-info.vo';
+import { BaseService } from '@app/core/service/base.service';
 import { Permission } from '@app/permissions/permission.entity';
-import { query } from 'express';
 import { Role } from '@app/roles/role.entity';
-import { plainToInstance } from 'class-transformer';
+import { RolesService } from '@app/roles/roles.service';
+import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
+import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
+import { User } from '@app/users/user.entity';
+import { IUserService } from '@app/users/users.service.interface';
+import { UserInfoVo } from '@app/users/vo/user-info.vo';
 
 @Injectable()
 export class UsersService
@@ -127,11 +126,21 @@ export class UsersService
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const roles = user.roles;
-    const permissions = roles.flatMap((role: Role) => role.permissions);
-    const uniquePermissionIds = new Set(permissions.map((p) => p.id));
+    const permissions = user.roles.flatMap((role: Role) => role.permissions);
+    const roles = user.roles.map((role: Role) => {
+      delete role.permissions;
+      return role;
+    });
+    const uniquePermissionIds = new Set(
+      permissions.map((p) => {
+        return `${p.method}-${p.path}`;
+      }),
+    );
     const uniquePermissions = Array.from(uniquePermissionIds).map(
-      (id) => permissions.find((p) => p.id === id) as Permission,
+      (identifier) =>
+        permissions.find(
+          (p) => `${p.method}-${p.path}` === identifier,
+        ) as Permission,
     );
     return Promise.resolve([roles, uniquePermissions]);
   }

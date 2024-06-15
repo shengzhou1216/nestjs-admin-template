@@ -1,5 +1,6 @@
-import { QueryPaginationOptionsDto } from '@app/common/dto/query-pagination-options.dto';
 import { Allow } from 'class-validator';
+
+import { QueryPaginationOptionsDto } from '@app/common/dto/query-pagination-options.dto';
 
 /**
  * Query permission dto

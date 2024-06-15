@@ -1,8 +1,8 @@
 import {
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 /**

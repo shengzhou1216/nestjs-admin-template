@@ -1,4 +1,5 @@
 import { Allow } from 'class-validator';
+
 import { BaseQueryDto } from '@app/common/dto/base-query.dto';
 
 /**

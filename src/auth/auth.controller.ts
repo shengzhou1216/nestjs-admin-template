@@ -7,13 +7,14 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService } from '@app/auth/auth.service';
-import { RegisterDto } from '@app/auth/dto/register.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { LoginDto } from '@app/auth/dto/login.dto';
-import { LocalAuthGuard } from '@app/auth/guards/local-auth.guard';
-import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
+
+import { AuthService } from '@app/auth/auth.service';
 import { Public } from '@app/auth/decorators/public.decorator';
+import { LoginDto } from '@app/auth/dto/login.dto';
+import { RegisterDto } from '@app/auth/dto/register.dto';
+import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '@app/auth/guards/local-auth.guard';
 import { User } from '@app/users/user.entity';
 
 /**

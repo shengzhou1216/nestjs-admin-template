@@ -1,14 +1,14 @@
-import { IRolesService } from '@app/roles/roles.service.interface';
-import { BaseService } from '@app/core/service/base.service';
-import { Role } from '@app/roles/role.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, ObjectLiteral, Repository } from 'typeorm';
-import { PaginateRoleDto } from '@app/roles/dto/paginate-role.dto';
+
 import { Pagination } from '@app/common/pagination/pagination';
-import { query } from 'express';
+import { BaseService } from '@app/core/service/base.service';
 import { PermissionsService } from '@app/permissions/permissions.service';
+import { PaginateRoleDto } from '@app/roles/dto/paginate-role.dto';
 import { SetRolePermissionsDto } from '@app/roles/dto/set-role-permissions.dto';
+import { Role } from '@app/roles/role.entity';
+import { IRolesService } from '@app/roles/roles.service.interface';
 
 @Injectable()
 export class RolesService

@@ -1,5 +1,6 @@
-import { BaseEntity } from '@app/common/entities/base.entity';
 import { Column, Entity, Index } from 'typeorm';
+
+import { BaseEntity } from '@app/common/entities/base.entity';
 
 /**
  * Permission entity

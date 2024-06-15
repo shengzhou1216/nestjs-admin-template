@@ -1,5 +1,4 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
-import { Pagination } from '@app/common/pagination/pagination';
 
 export interface ICrudService<T, ID> {
   /**

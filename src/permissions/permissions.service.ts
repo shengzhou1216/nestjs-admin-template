@@ -1,8 +1,6 @@
-import { BaseService } from '@app/core/service/base.service';
-import { IPermissionsService } from '@app/permissions/permissions.service.interface';
-import { Permission } from '@app/permissions/permission.entity';
 import { Injectable, Logger, RequestMethod } from '@nestjs/common';
 import { METHOD_METADATA, PATH_METADATA } from '@nestjs/common/constants';
+import { DiscoveryService, Reflector } from '@nestjs/core';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import {
   DataSource,
@@ -11,14 +9,16 @@ import {
   ObjectLiteral,
   Repository,
 } from 'typeorm';
-import { DiscoveryService, Reflector } from '@nestjs/core';
+
+import { Pagination } from '@app/common/pagination/pagination';
+import { BaseService } from '@app/core/service/base.service';
 import {
   PERMISSION_KEY,
   PermissionMetadata,
 } from '@app/permissions/decorators/permission.decorator';
 import { PaginatePermissionDto } from '@app/permissions/dto/paginate-permission.dto';
-import { Pagination } from '@app/common/pagination/pagination';
-import { scan } from 'rxjs';
+import { Permission } from '@app/permissions/permission.entity';
+import { IPermissionsService } from '@app/permissions/permissions.service.interface';
 
 @Injectable()
 export class PermissionsService
@@ -123,6 +123,10 @@ export class PermissionsService
     }
   }
 
+  async findByIds(ids: bigint[]): Promise<Permission[]> {
+    return this.repository.createQueryBuilder().whereInIds(ids).getMany();
+  }
+
   /**
    * 扫描实例中的方法，获取带有Permission注解的的路径
    * @param instance
@@ -177,9 +181,5 @@ export class PermissionsService
       return `/${sanitizedPrefix}`;
     }
     return `/${sanitizedPrefix}/${sanitizedPath}`.replace(/\/+/g, '/'); // 确保中间只有一个 /
-  }
-
-  async findByIds(ids: bigint[]): Promise<Permission[]> {
-    return this.repository.createQueryBuilder().whereInIds(ids).getMany();
   }
 }

@@ -1,22 +1,24 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
   Put,
   Query,
 } from '@nestjs/common';
-import { RolesService } from '@app/roles/roles.service';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { BaseController } from '@app/common/controller/base.controller';
-import { Role } from '@app/roles/role.entity';
-import { plainToInstance } from 'class-transformer';
 import { ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
+
+import { BaseController } from '@app/common/controller/base.controller';
 import { PaginateRoleDto } from '@app/roles/dto/paginate-role.dto';
 import { SetRolePermissionsDto } from '@app/roles/dto/set-role-permissions.dto';
+import { Role } from '@app/roles/role.entity';
+import { RolesService } from '@app/roles/roles.service';
+
+import { CreateRoleDto } from './dto/create-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('roles')
 @ApiTags('roles')

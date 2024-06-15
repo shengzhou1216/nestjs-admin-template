@@ -1,6 +1,7 @@
-import { BaseEntity } from '@app/common/entities/base.entity';
-import { Entity, Column, JoinTable, ManyToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+
+import { BaseEntity } from '@app/common/entities/base.entity';
 import { Role } from '@app/roles/role.entity';
 
 @Entity()
@@ -23,5 +24,5 @@ export class User extends BaseEntity {
     createForeignKeyConstraints: false,
   })
   @JoinTable()
-  roles: Role[];
+  roles?: Role[];
 }

@@ -1,11 +1,11 @@
-import { IBaseService } from '@app/core/service/base.service.interface';
-import { User } from '@app/users/user.entity';
-import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
 import { Pagination } from '@app/common/pagination/pagination';
-import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
-import { UserInfoVo } from '@app/users/vo/user-info.vo';
+import { IBaseService } from '@app/core/service/base.service.interface';
 import { Permission } from '@app/permissions/permission.entity';
 import { Role } from '@app/roles/role.entity';
+import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
+import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
+import { User } from '@app/users/user.entity';
+import { UserInfoVo } from '@app/users/vo/user-info.vo';
 export interface IUserService extends IBaseService<User, bigint> {
   /**
    * find user by username

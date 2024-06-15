@@ -1,8 +1,9 @@
-import { IBaseService } from '@app/core/service/base.service.interface';
-import { Role } from '@app/roles/role.entity';
-import { PaginateRoleDto } from '@app/roles/dto/paginate-role.dto';
 import { Pagination } from '@app/common/pagination/pagination';
+import { IBaseService } from '@app/core/service/base.service.interface';
+import { PaginateRoleDto } from '@app/roles/dto/paginate-role.dto';
 import { SetRolePermissionsDto } from '@app/roles/dto/set-role-permissions.dto';
+import { Role } from '@app/roles/role.entity';
+
 export interface IRolesService extends IBaseService<Role, bigint> {
   /**
    * paginate roles

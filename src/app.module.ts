@@ -3,31 +3,31 @@ import {
   Module,
   ValidationPipe,
 } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { RolesModule } from './roles/roles.module';
-import { CommonModule } from './common/common.module';
-import { CoreModule } from './core/core.module';
-import { DataSource } from 'typeorm';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { WinstonModule } from 'nest-winston';
+import { DataSource } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import * as winston from 'winston';
+
+import { AppController } from '@app/app.controller';
+import { AppService } from '@app/app.service';
+import { AuthModule } from '@app/auth/auth.module';
+import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
+import { CommonModule } from '@app/common/common.module';
 import configuration, { validationSchema } from '@app/config/configuration';
 import DbConfig from '@app/config/db.config';
-import { ResponseInterceptor } from '@app/core/interceptors/response.interceptor';
-import { HttpExceptionFilter } from '@app/core/filters/http-exception.filter';
-import { AllExceptionsFilter } from '@app/core/filters/all-exceptions.filter';
-import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
-import { PermissionsModule } from '@app/permissions/permissions.module';
-import { HealthModule } from './health/health.module';
-import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
-import SystemConfig from '@app/config/system.config';
 import LoggerConfig from '@app/config/logger.config';
+import SystemConfig from '@app/config/system.config';
+import { CoreModule } from '@app/core/core.module';
+import { AllExceptionsFilter } from '@app/core/filters/all-exceptions.filter';
+import { HttpExceptionFilter } from '@app/core/filters/http-exception.filter';
+import { LoggingInterceptor } from '@app/core/interceptors/logging.interceptor';
+import { ResponseInterceptor } from '@app/core/interceptors/response.interceptor';
+import { PermissionsModule } from '@app/permissions/permissions.module';
+import { RolesModule } from '@app/roles/roles.module';
+import { UsersModule } from '@app/users/users.module';
 
 @Module({
   imports: [
@@ -100,7 +100,6 @@ import LoggerConfig from '@app/config/logger.config';
     UsersModule,
     ConfigModule,
     PermissionsModule,
-    HealthModule,
   ],
   controllers: [AppController],
   providers: [

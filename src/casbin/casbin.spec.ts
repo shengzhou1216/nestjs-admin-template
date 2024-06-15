@@ -1,5 +1,6 @@
-import { newEnforcer } from 'casbin';
 import * as path from 'path';
+
+import { newEnforcer } from 'casbin';
 
 describe('Casbin Test', () => {
   test('test rbac', async () => {

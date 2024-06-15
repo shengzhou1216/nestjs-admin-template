@@ -1,23 +1,24 @@
-import { BaseController } from '@app/common/controller/base.controller';
-import { User } from '@app/users/user.entity';
-import { UsersService } from '@app/users/users.service';
-import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
 import {
-  Query,
-  Get,
-  Controller,
-  Param,
-  Delete,
-  NotFoundException,
   Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
+
+import { BaseController } from '@app/common/controller/base.controller';
 import { Permission } from '@app/permissions/decorators/permission.decorator';
 import { CreateUserDto } from '@app/users/dto/create-user.dto';
-import { plainToInstance } from 'class-transformer';
+import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
 import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
+import { User } from '@app/users/user.entity';
+import { UsersService } from '@app/users/users.service';
 
 /**
  * Users controller

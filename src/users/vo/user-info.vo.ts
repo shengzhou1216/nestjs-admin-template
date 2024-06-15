@@ -1,5 +1,5 @@
-import { Role } from '@app/roles/role.entity';
 import { Permission } from '@app/permissions/permission.entity';
+import { Role } from '@app/roles/role.entity';
 
 export class UserInfoVo {
   id: bigint;

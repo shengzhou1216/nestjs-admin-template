@@ -4,6 +4,7 @@ import {
   OnApplicationBootstrap,
   OnApplicationShutdown,
 } from '@nestjs/common';
+
 import { PermissionsService } from '@app/permissions/permissions.service';
 
 @Injectable()

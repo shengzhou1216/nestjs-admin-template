@@ -1,10 +1,11 @@
 import {
   IsEmail,
-  Matches,
-  IsString,
   IsNotEmpty,
+  IsString,
+  Matches,
   MaxLength,
 } from 'class-validator';
+
 import { IsEqual } from '@app/common/validator/decorators/equal.decorator';
 
 /**

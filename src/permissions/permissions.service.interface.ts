@@ -1,7 +1,7 @@
-import { Permission } from '@app/permissions/permission.entity';
+import { Pagination } from '@app/common/pagination/pagination';
 import { IBaseService } from '@app/core/service/base.service.interface';
 import { PaginatePermissionDto } from '@app/permissions/dto/paginate-permission.dto';
-import { Pagination } from '@app/common/pagination/pagination';
+import { Permission } from '@app/permissions/permission.entity';
 
 /**
  * Permissions service interface
