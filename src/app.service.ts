@@ -16,11 +16,11 @@ export class AppService
   constructor(readonly permissionsService: PermissionsService) {}
 
   async onApplicationBootstrap() {
-    this.logger.log('AppService is starting...');
+    this.logger.log('App is starting...');
     await this.permissionsService.initSystemPermissions();
   }
 
   async onApplicationShutdown(signal?: string) {
-    this.logger.log('AppService is stopping...', signal);
+    this.logger.log('App is stopping...', signal);
   }
 }

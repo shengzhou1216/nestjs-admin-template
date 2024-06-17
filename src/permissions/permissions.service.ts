@@ -119,7 +119,9 @@ export class PermissionsService
         },
       );
     } catch (e) {
-      this.logger.error('Failed to update permissions', e);
+      this.logger.error(
+        `Failed to init system permissions. ${JSON.stringify(e)}`,
+      );
     }
   }
 
