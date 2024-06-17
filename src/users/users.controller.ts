@@ -31,27 +31,27 @@ export class UsersController extends BaseController<User, bigint> {
   }
 
   /**
-   * create user
    * @param createUserDto CreateUserDto
    */
+  @Permission({ name: '创建用户' })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return this.service.create(plainToInstance(User, createUserDto));
   }
 
   /**
-   * paginate users
    * @param query
    */
+  @Permission({ name: '分页获取用户' })
   @Get()
   async paginate(@Query() query: PaginateUserDto) {
     return this.service.paginate(query);
   }
 
   /**
-   * get user by id
    * @param id
    */
+  @Permission({ name: '根据ID获取用户' })
   @Get(':id')
   async getById(@Param('id') id: bigint) {
     const user = await this.service.findById(id);
@@ -62,22 +62,20 @@ export class UsersController extends BaseController<User, bigint> {
   }
 
   /**
-   * delete user by id
    * @param id
    */
+  @Permission({ name: '根据ID删除用户' })
   @Delete(':id')
-  @Permission({ name: 'delete user' })
   async deleteById(@Param('id') id: bigint) {
     await this.service.deleteById(id);
   }
 
   /**
-   * set user roles
    * @param id
    * @param setUserRolesDto
    */
+  @Permission({ name: '根据ID设置用户的角色' })
   @Put(':id/roles')
-  @Permission({ name: 'set user roles' })
   async setRoles(
     @Param('id') id: bigint,
     @Body() setUserRolesDto: SetUserRolesDto,
@@ -86,9 +84,9 @@ export class UsersController extends BaseController<User, bigint> {
   }
 
   /**
-   * get user info
    * @param id
    */
+  @Permission({ name: '根据ID获取用户的信息' })
   @Get(':id/info')
   async getInfo(@Param('id') id: bigint) {
     return this.service.getUserInfoById(id);
