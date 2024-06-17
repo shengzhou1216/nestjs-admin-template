@@ -29,6 +29,7 @@ export class AuthController {
    * Register a new user
    * @param registerDto
    */
+  @Public()
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     await this.service.register(registerDto);
