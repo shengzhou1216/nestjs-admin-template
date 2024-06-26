@@ -29,7 +29,7 @@ export class PermissionsService
 
   constructor(
     @InjectRepository(Permission)
-    readonly repository: Repository<Permission>,
+    protected readonly repository: Repository<Permission>,
     @InjectDataSource() private readonly dataSource: DataSource,
     private readonly discoveryService: DiscoveryService,
     private readonly reflector: Reflector,

@@ -2,15 +2,19 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, ObjectLiteral, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, ILike, ObjectLiteral, Repository } from 'typeorm';
 
+import { Constants } from '@app/common/constants/constants';
 import { Pagination } from '@app/common/pagination/pagination';
+import { RandUtil } from '@app/common/utils/rand.util';
 import { SaltUtil } from '@app/common/utils/salt.util';
 import { BaseService } from '@app/core/service/base.service';
 import { Permission } from '@app/permissions/permission.entity';
+import { PolicyService } from '@app/policy/policy.service';
 import { Role } from '@app/roles/role.entity';
 import { RolesService } from '@app/roles/roles.service';
 import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
@@ -24,9 +28,13 @@ export class UsersService
   extends BaseService<User, bigint>
   implements IUserService
 {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(
-    @InjectRepository(User) readonly repository: Repository<User>,
-    readonly roleService: RolesService,
+    @InjectRepository(User) protected readonly repository: Repository<User>,
+    private readonly roleService: RolesService,
+    @InjectDataSource() private readonly dataSource: DataSource,
+    private readonly policyService: PolicyService,
   ) {
     super(repository);
   }
@@ -93,6 +101,7 @@ export class UsersService
     }
     user.roles = roles;
     await this.repository.save(user);
+    await this.policyService.addRolesForUser(userId, ...roleIds);
   }
 
   async getUserInfoById(id: bigint): Promise<UserInfoVo> {
@@ -101,14 +110,11 @@ export class UsersService
       throw new NotFoundException('User not found');
     }
     const [roles, permissions] = await this.getUserRolePermissionsById(id);
-    const userInfoVo = new UserInfoVo();
-    userInfoVo.roles = roles;
-    userInfoVo.permissions = permissions;
-    userInfoVo.id = user.id;
-    userInfoVo.username = user.username;
-    userInfoVo.email = user.email;
-    userInfoVo.createdAt = user.createdAt;
-    return userInfoVo;
+    return new UserInfoVo({
+      roles,
+      permissions,
+      ...user,
+    });
   }
 
   async getUserRolePermissionsById(
@@ -143,5 +149,52 @@ export class UsersService
         ) as Permission,
     );
     return Promise.resolve([roles, uniquePermissions]);
+  }
+
+  async initAdmin() {
+    try {
+      await this.dataSource.transaction(async (manager) => {
+        // 判断是否存在管理员角色
+        let adminRole = await manager.getRepository(Role).findOneBy({
+          label: Constants.ADMIN_ROLE_LABEL,
+        });
+        if (!adminRole) {
+          adminRole = await manager.getRepository(Role).save({
+            name: '管理员',
+            label: Constants.ADMIN_ROLE_LABEL,
+            description: '拥有所有权限',
+          });
+        }
+        // 判断是否存在管理员用户
+        const exists = await manager
+          .getRepository(User)
+          .createQueryBuilder('user')
+          .innerJoin('user.roles', 'role', 'role.label = :label', {
+            label: Constants.ADMIN_ROLE_LABEL,
+          })
+          .getExists();
+        if (exists) {
+          return;
+        }
+        let admin = await manager.getRepository(User).findOneBy({
+          username: 'admin',
+        });
+        if (!admin) {
+          // 创建管理员用户
+          const password = RandUtil.generatePassword();
+          this.logger.log(`Admin password: ${password}. Please change it!`);
+          admin = await manager.getRepository(User).save({
+            username: 'admin',
+            password: password,
+            email: 'admin@nat.com',
+          } as User);
+        }
+        // 设置管理员角色
+        admin.roles = [adminRole];
+        await manager.getRepository(User).save(admin);
+      });
+    } catch (e) {
+      this.logger.error(`Init admin failed. ${e.stack}`);
+    }
   }
 }

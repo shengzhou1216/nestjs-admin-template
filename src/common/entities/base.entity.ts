@@ -18,15 +18,13 @@ export class BaseEntity {
   /**
    * Date when the entity was created.
    */
-  @CreateDateColumn({})
+  @CreateDateColumn()
   createdAt: Date;
 
   /**
    * Date when the entity was last updated.
    */
-  @UpdateDateColumn({
-    name: 'updated_at',
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 
   /**

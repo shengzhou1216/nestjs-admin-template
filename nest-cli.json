@@ -18,6 +18,11 @@
         "include": "../config/*.yaml",
         "outDir": "./dist/config",
         "watchAssets": true
+      },
+      {
+        "include": "../config/casbin/*",
+        "outDir": "./dist/config",
+        "watchAssets": true
       }
     ]
   }

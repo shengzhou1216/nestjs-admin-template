@@ -15,6 +15,7 @@ import { AppController } from '@app/app.controller';
 import { AppService } from '@app/app.service';
 import { AuthModule } from '@app/auth/auth.module';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
+import { CacheModule } from '@app/cache/cache.module';
 import { CommonModule } from '@app/common/common.module';
 import configuration, { validationSchema } from '@app/config/configuration';
 import DbConfig from '@app/config/db.config';
@@ -25,7 +26,9 @@ import { AllExceptionsFilter } from '@app/core/filters/all-exceptions.filter';
 import { HttpExceptionFilter } from '@app/core/filters/http-exception.filter';
 import { LoggingInterceptor } from '@app/core/interceptors/logging.interceptor';
 import { ResponseInterceptor } from '@app/core/interceptors/response.interceptor';
+import { PermissionGuard } from '@app/permissions/gurads/permission.guard';
 import { PermissionsModule } from '@app/permissions/permissions.module';
+import { PolicyModule } from '@app/policy/policy.module';
 import { RolesModule } from '@app/roles/roles.module';
 import { UsersModule } from '@app/users/users.module';
 
@@ -87,7 +90,8 @@ import { UsersModule } from '@app/users/users.module';
           password: config.password,
           database: config.database,
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true, // Don't use this in production, otherwise you can lose data
+          autoLoadEntities: true,
+          synchronize: true, //fixme: Don't use this in production, otherwise you can lose data
           logging: true,
           namingStrategy: new SnakeNamingStrategy(),
         };
@@ -100,6 +104,8 @@ import { UsersModule } from '@app/users/users.module';
     UsersModule,
     ConfigModule,
     PermissionsModule,
+    PolicyModule,
+    CacheModule,
   ],
   controllers: [AppController],
   providers: [
@@ -136,6 +142,10 @@ import { UsersModule } from '@app/users/users.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
     AppService,
   ],

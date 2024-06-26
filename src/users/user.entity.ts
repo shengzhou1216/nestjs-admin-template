@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
+import { Constants } from '@app/common/constants/constants';
 import { BaseEntity } from '@app/common/entities/base.entity';
 import { Role } from '@app/roles/role.entity';
 
@@ -25,4 +26,10 @@ export class User extends BaseEntity {
   })
   @JoinTable()
   roles?: Role[];
+
+  public isAdmin(): boolean {
+    return this.roles?.some(
+      (role) => role.label === Constants.ADMIN_ROLE_LABEL,
+    );
+  }
 }

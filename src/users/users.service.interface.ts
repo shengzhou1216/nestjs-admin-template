@@ -2,6 +2,7 @@ import { Pagination } from '@app/common/pagination/pagination';
 import { IBaseService } from '@app/core/service/base.service.interface';
 import { Permission } from '@app/permissions/permission.entity';
 import { Role } from '@app/roles/role.entity';
+import { CreateUserDto } from '@app/users/dto/create-user.dto';
 import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
 import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
 import { User } from '@app/users/user.entity';

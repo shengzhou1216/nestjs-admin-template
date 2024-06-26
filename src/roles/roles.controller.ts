@@ -24,7 +24,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 @Controller('roles')
 @ApiTags('roles')
 export class RolesController extends BaseController<Role, bigint> {
-  constructor(readonly rolesService: RolesService) {
+  constructor(private readonly rolesService: RolesService) {
     super(rolesService);
   }
 

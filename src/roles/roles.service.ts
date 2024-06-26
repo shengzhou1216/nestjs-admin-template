@@ -17,8 +17,8 @@ export class RolesService
 {
   constructor(
     @InjectRepository(Role)
-    readonly repository: Repository<Role>,
-    readonly permissionService: PermissionsService,
+    protected readonly repository: Repository<Role>,
+    private readonly permissionService: PermissionsService,
   ) {
     super(repository);
   }

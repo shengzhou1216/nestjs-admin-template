@@ -10,7 +10,7 @@ import { PermissionsService } from '@app/permissions/permissions.service';
 @ApiTags('Permission')
 @Controller('permissions')
 export class PermissionsController extends BaseController<Permission, bigint> {
-  constructor(readonly service: PermissionsService) {
+  constructor(private readonly service: PermissionsService) {
     super(service);
   }
 

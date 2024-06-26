@@ -2,20 +2,24 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Post,
   Req,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { log } from 'winston';
 
 import { AuthService } from '@app/auth/auth.service';
 import { Public } from '@app/auth/decorators/public.decorator';
 import { LoginDto } from '@app/auth/dto/login.dto';
 import { RegisterDto } from '@app/auth/dto/register.dto';
 import { JwtAuthGuard } from '@app/auth/guards/jwt-auth.guard';
-import { LocalAuthGuard } from '@app/auth/guards/local-auth.guard';
+import { CacheService } from '@app/cache/cache.service';
+import { CacheUtil } from '@app/cache/cache.util';
 import { User } from '@app/users/user.entity';
+import { UsersService } from '@app/users/users.service';
 
 /**
  * Auth controller
@@ -23,7 +27,11 @@ import { User } from '@app/users/user.entity';
 @Controller('auth')
 @ApiTags('auth')
 export class AuthController {
-  constructor(readonly service: AuthService) {}
+  constructor(
+    private readonly service: AuthService,
+    private readonly usersService: UsersService,
+    private readonly cacheService: CacheService,
+  ) {}
 
   /**
    * Register a new user
@@ -38,17 +46,14 @@ export class AuthController {
   /**
    * Login
    * @param loginDto
-   * @param req
    */
   @Public()
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(
-    @Body() loginDto: LoginDto,
-    @Req() req: Request & { user: User },
-  ) {
-    // fixme: 也可以不使用 Local strategy，自己处理登录逻辑，而是直接调用 service.login
-    return this.service.login(req.user);
+  async login(@Body() loginDto: LoginDto) {
+    const user = await this.service.login(loginDto);
+    const info = await this.usersService.getUserInfoById(user.id);
+    await this.cacheService.set(CacheUtil.getUserCacheKey(user.id), info);
+    return this.service.sign(info);
   }
 
   @UseGuards(JwtAuthGuard)
