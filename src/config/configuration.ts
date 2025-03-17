@@ -22,6 +22,13 @@ export const validationSchema = Joi.object().keys({
       password: Joi.string().required().description('Postgres password'),
       database: Joi.string().required().description('Postgres database name'),
     }),
+    mysql: Joi.object().keys({
+      host: Joi.string().default('localhost').description('Mysql host'),
+      port: Joi.number().default(3306).description('Mysql port'),
+      username: Joi.string().required().description('Mysql username'),
+      password: Joi.string().required().description('Mysql password'),
+      database: Joi.string().required().description('Mysql database name'),
+    }),
   }),
   jwt: Joi.object().keys({
     secret: Joi.string().required().description('JWT secret key'),

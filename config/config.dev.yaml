@@ -10,6 +10,12 @@ db:
     database: nestjs-admin-tpl
     username: postgres
     password: postgres
+  mysql:
+    host: localhost
+    port: 3306
+    database: nestjs-admin-tpl
+    username: root
+    password: root
 
 jwt:
   secret: DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.
