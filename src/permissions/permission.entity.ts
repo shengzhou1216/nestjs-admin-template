@@ -8,15 +8,15 @@ import { BaseEntity } from '@app/common/entities/base.entity';
 @Entity()
 @Index(['path', 'method'], { unique: true })
 export class Permission extends BaseEntity {
-  @Column({ comment: '路径' })
+  @Column({ comment: 'request path' })
   path: string;
 
-  @Column({ length: 100, comment: '方法' })
+  @Column({ length: 100, comment: 'request method' })
   method: string;
 
-  @Column({ length: 100, comment: '权限名称' })
+  @Column({ length: 100, comment: 'permission name' })
   name: string;
 
-  @Column({ nullable: true, length: 255, comment: '描述' })
+  @Column({ nullable: true, length: 255, comment: 'permission description' })
   description?: string;
 }

@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { BaseController } from '@app/common/controller/base.controller';
 import { Permission as PermissionDecorator } from '@app/permissions/decorators/permission.decorator';
@@ -14,7 +14,8 @@ export class PermissionsController extends BaseController {
   }
 
   @Get()
-  @PermissionDecorator({ name: '获取权限列表' })
+  @PermissionDecorator({ name: 'Get permissions' })
+  @ApiOperation({ summary: 'Get permissions' })
   async paginate(@Query() query: PaginatePermissionDto) {
     return this.service.paginate(query);
   }

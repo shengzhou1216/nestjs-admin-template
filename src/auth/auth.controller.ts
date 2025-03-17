@@ -8,7 +8,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { log } from 'winston';
 
 import { AuthService } from '@app/auth/auth.service';
@@ -33,22 +33,16 @@ export class AuthController {
     private readonly cacheService: CacheService,
   ) {}
 
-  /**
-   * Register a new user
-   * @param registerDto
-   */
   @Public()
   @Post('register')
+  @ApiOperation({ summary: 'Register' })
   async register(@Body() registerDto: RegisterDto) {
     await this.service.register(registerDto);
   }
 
-  /**
-   * Login
-   * @param loginDto
-   */
   @Public()
   @Post('login')
+  @ApiOperation({ summary: 'Login' })
   async login(@Body() loginDto: LoginDto) {
     const user = await this.service.login(loginDto);
     const info = await this.usersService.getUserInfoById(user.id);
@@ -58,6 +52,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @ApiOperation({ summary: 'Get profile' })
   async getProfile(@Request() req: Request & { user: User }) {
     return req.user;
   }

@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { plainToInstance } from 'class-transformer';
 
 import { BaseController } from '@app/common/controller/base.controller';
@@ -30,29 +30,24 @@ export class UsersController extends BaseController {
     super();
   }
 
-  /**
-   * @param createUserDto CreateUserDto
-   */
-  @Permission({ name: '创建用户' })
+  @Permission({ name: 'Create user' })
   @Post()
+  @ApiOperation({ summary: 'Create user' })
   async create(@Body() createUserDto: CreateUserDto) {
     return this.service.create(plainToInstance(User, createUserDto));
   }
 
-  /**
-   * @param query
-   */
-  @Permission({ name: '分页获取用户' })
+  @Permission({ name: 'Paginate users' })
   @Get()
+  @ApiOperation({ summary: 'Paginate users' })
   async paginate(@Query() query: PaginateUserDto) {
     return this.service.paginate(query);
   }
 
-  /**
-   * @param id
-   */
-  @Permission({ name: '根据ID获取用户' })
+
+  @Permission({ name: 'Get user by id' })
   @Get(':id')
+  @ApiOperation({ summary: 'Get user by id' })
   async getById(@Param('id') id: bigint) {
     const user = await this.service.findById(id);
     if (!user) {
@@ -61,21 +56,17 @@ export class UsersController extends BaseController {
     return user;
   }
 
-  /**
-   * @param id
-   */
-  @Permission({ name: '根据ID删除用户' })
+
+  @Permission({ name: 'Delete user by id' })
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete user by id' })
   async deleteById(@Param('id') id: bigint) {
     await this.service.deleteById(id);
   }
 
-  /**
-   * @param id
-   * @param setUserRolesDto
-   */
-  @Permission({ name: '根据ID设置用户的角色' })
+  @Permission({ name: 'Set user roles by id' })
   @Put(':id/roles')
+  @ApiOperation({ summary: 'Set user roles by id' })
   async setRoles(
     @Param('id') id: bigint,
     @Body() setUserRolesDto: SetUserRolesDto,
@@ -83,11 +74,10 @@ export class UsersController extends BaseController {
     await this.service.setUserRoles(id, setUserRolesDto);
   }
 
-  /**
-   * @param id
-   */
-  @Permission({ name: '根据ID获取用户的信息' })
+
+  @Permission({ name: 'Get user info by id' })
   @Get(':id/info')
+  @ApiOperation({ summary: 'Get user info by id' })
   async getInfo(@Param('id') id: bigint) {
     return this.service.getUserInfoById(id);
   }

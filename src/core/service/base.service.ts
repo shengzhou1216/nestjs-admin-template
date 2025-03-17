@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
@@ -8,10 +8,13 @@ import { IBaseService } from '@app/core/service/base.service.interface';
 
 @Injectable()
 export class BaseService<T> implements IBaseService<T> {
+  // protected readonly logger = new Logger(this.constructor.name);
+
   constructor(
     @InjectRepository(BaseEntity)
     protected readonly repository: Repository<T>,
   ) { }
+  
 
   async create(entity: T): Promise<T> {
     return this.repository.save(entity);

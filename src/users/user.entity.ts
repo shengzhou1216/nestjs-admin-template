@@ -29,7 +29,7 @@ export class User extends BaseEntity {
 
   public isAdmin(): boolean {
     return this.roles?.some(
-      (role) => role.label === Constants.ADMIN_ROLE_LABEL,
+      (role) => role.label.toLowerCase() === Constants.ADMIN_ROLE_LABEL.toLowerCase(),
     );
   }
 }

@@ -14,6 +14,12 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     context: ExecutionContext,
     next: CallHandler,
   ): Promise<Observable<Response<T>>> {
-    return next.handle().pipe(map((data) => Response.success(data)));
+    return next.handle().pipe(map((data) => {
+      if (data instanceof Response) {
+        return data;
+      }
+        return Response.success(data);
+      }),
+    );
   }
 }
