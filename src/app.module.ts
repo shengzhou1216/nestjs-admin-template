@@ -56,7 +56,9 @@ import { UsersModule } from '@app/users/users.module';
               format: loggerConfig.format || 'YYYY/MM/DD HH:mm:ss',
             }),
             winston.format.ms(),
-            winston.format.colorize(),
+            winston.format.colorize({
+              all: true,
+            }),
             winston.format.label({
               label: `[${systemConfig.name}]`,
             }),
