@@ -59,14 +59,14 @@ export class PermissionsService
   }
 
   /**
-   * 初始化系统权限
+   * Initialize system permissions
    *
-   * 1. 扫描所有 @Permission 接口，获取所有的权限
-   * 2. 将权限保存到数据库
+   * 1. Scan all @Permission interfaces, get all permissions
+   * 2. Save permissions to database
    */
   async initSystemPermissions() {
     this.logger.log('Initializing system permissions...');
-    // 1. 扫描所有的接口，获取所有的权限
+    // 1. Scan all interfaces, get all permissions
     const controllers = this.discoveryService.getControllers();
     const scannedPermissions = controllers
       .map((wrapper) => {
@@ -87,13 +87,13 @@ export class PermissionsService
     this.logger.log(
       `Scanned permission: ${JSON.stringify(scannedPermissions)}`,
     );
-    // 2. 将权限保存到数据库
+    // 2. Save permissions to database
     const storedPermission = await this.repository.find();
     const updatedPermissions = [];
     const scannedPermissionPaths = new Set(
       scannedPermissions.map((p) => `${p.path}-${p.method}`),
     );
-    // 遍历 scannedPermissions，更新或新增权限
+    // Iterate over scannedPermissions, update or add permissions
     scannedPermissions.forEach((route) => {
       const existingPermission = storedPermission.find(
         (p) => p.path === route.path && p.method === route.method,
@@ -130,7 +130,7 @@ export class PermissionsService
   }
 
   /**
-   * 扫描实例中的方法，获取带有Permission注解的的路径
+   * Scan methods in instance, get paths with Permission annotation
    * @param instance
    * @private
    */
@@ -173,7 +173,7 @@ export class PermissionsService
     if (!path) {
       return '';
     }
-    return path.replace(/^\/+|\/+$/g, ''); // 去除前后的 /
+    return path.replace(/^\/+|\/+$/g, ''); // Remove leading and trailing /
   }
 
   private joinPaths(prefix: string, path: string): string {
@@ -182,6 +182,6 @@ export class PermissionsService
     if (sanitizedPath === '') {
       return `/${sanitizedPrefix}`;
     }
-    return `/${sanitizedPrefix}/${sanitizedPath}`.replace(/\/+/g, '/'); // 确保中间只有一个 /
+    return `/${sanitizedPrefix}/${sanitizedPath}`.replace(/\/+/g, '/'); // Ensure only one / in the middle
   }
 }
