@@ -6,7 +6,7 @@ import { Permission } from '@app/permissions/permission.entity';
 /**
  * Permissions service interface
  */
-export interface IPermissionsService extends IBaseService<Permission, bigint> {
+export interface IPermissionsService extends IBaseService<Permission> {
   /**
    * paginate permission
    * @param query PaginatePermissionDto

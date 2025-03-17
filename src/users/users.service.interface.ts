@@ -7,7 +7,8 @@ import { PaginateUserDto } from '@app/users/dto/paginate-user.dto';
 import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
 import { User } from '@app/users/user.entity';
 import { UserInfoVo } from '@app/users/vo/user-info.vo';
-export interface IUserService extends IBaseService<User, bigint> {
+
+export interface IUserService extends IBaseService<User> {
   /**
    * find user by username
    * @param username string

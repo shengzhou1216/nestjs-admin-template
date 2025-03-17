@@ -81,9 +81,9 @@ import { UsersModule } from '@app/users/users.module';
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const config = configService.get<DbConfig>('db').postgres;
+        const config = configService.get<DbConfig>('db').mysql;
         return {
-          type: 'postgres',
+          type: 'mysql',
           host: config.host,
           port: config.port,
           username: config.username,

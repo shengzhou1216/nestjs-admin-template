@@ -1,6 +1,6 @@
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-export interface ICrudService<T, ID> {
+export interface ICrudService<T> {
   /**
    * Create entity. Return created entity
    * @param entity Entity
@@ -18,7 +18,7 @@ export interface ICrudService<T, ID> {
    * @param id Entity id
    * @returns Promise<T | null>
    */
-  findById(id: ID): Promise<T | null>;
+  findById(id: string | number): Promise<T | null>;
 
   /**
    * Update entity by id
@@ -26,7 +26,7 @@ export interface ICrudService<T, ID> {
    * @param data Data to update
    * @returns Promise<void>
    */
-  updateById(id: ID, data: QueryDeepPartialEntity<T>): Promise<void>;
+  updateById(id: string | number, data: QueryDeepPartialEntity<T>): Promise<void>;
 
   /**
    * Delete entity by id
@@ -35,7 +35,7 @@ export interface ICrudService<T, ID> {
    * @param id Entity id
    * @returns Promise<void>
    */
-  deleteById(id: ID): Promise<void>;
+  deleteById(id: string | number): Promise<void>;
 
   /**
    * Save or update entity

@@ -22,7 +22,7 @@ import { IPermissionsService } from '@app/permissions/permissions.service.interf
 
 @Injectable()
 export class PermissionsService
-  extends BaseService<Permission, bigint>
+  extends BaseService<Permission>
   implements IPermissionsService
 {
   private readonly logger = new Logger(PermissionsService.name);

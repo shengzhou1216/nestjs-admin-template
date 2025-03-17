@@ -7,6 +7,9 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import SystemConfig from '@app/config/system.config';
 
 import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common';
+
+const logger = new Logger('Main');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {});
@@ -38,5 +41,5 @@ async function bootstrap() {
 }
 
 bootstrap().then((config: SystemConfig) => {
-  console.log(`Server is running on http://localhost:${config.port}`);
+  logger.log(`Server is running on http://localhost:${config.port}`);
 });

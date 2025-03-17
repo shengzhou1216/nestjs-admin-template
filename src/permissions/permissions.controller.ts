@@ -4,14 +4,13 @@ import { ApiTags } from '@nestjs/swagger';
 import { BaseController } from '@app/common/controller/base.controller';
 import { Permission as PermissionDecorator } from '@app/permissions/decorators/permission.decorator';
 import { PaginatePermissionDto } from '@app/permissions/dto/paginate-permission.dto';
-import { Permission } from '@app/permissions/permission.entity';
 import { PermissionsService } from '@app/permissions/permissions.service';
 
 @ApiTags('Permission')
 @Controller('permissions')
-export class PermissionsController extends BaseController<Permission, bigint> {
+export class PermissionsController extends BaseController {
   constructor(private readonly service: PermissionsService) {
-    super(service);
+    super();
   }
 
   @Get()

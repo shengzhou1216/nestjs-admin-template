@@ -4,7 +4,7 @@ import { PaginateRoleDto } from '@app/roles/dto/paginate-role.dto';
 import { SetRolePermissionsDto } from '@app/roles/dto/set-role-permissions.dto';
 import { Role } from '@app/roles/role.entity';
 
-export interface IRolesService extends IBaseService<Role, bigint> {
+export interface IRolesService extends IBaseService<Role> {
   /**
    * paginate roles
    * @param query

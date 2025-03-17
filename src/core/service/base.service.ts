@@ -7,11 +7,11 @@ import { BaseEntity } from '@app/common/entities/base.entity';
 import { IBaseService } from '@app/core/service/base.service.interface';
 
 @Injectable()
-export class BaseService<T, ID> implements IBaseService<T, ID> {
+export class BaseService<T> implements IBaseService<T> {
   constructor(
     @InjectRepository(BaseEntity)
     protected readonly repository: Repository<T>,
-  ) {}
+  ) { }
 
   async create(entity: T): Promise<T> {
     return this.repository.save(entity);
@@ -22,7 +22,7 @@ export class BaseService<T, ID> implements IBaseService<T, ID> {
   }
 
   async findById(id: ID): Promise<T> {
-    return this.repository.findOneBy({ id: id } as FindOptionsWhere<T>);
+    return this.repository.findOneBy({ id } as unknown as FindOptionsWhere<T>);
   }
 
   async updateById(id: ID, entity: QueryDeepPartialEntity<T>): Promise<void> {

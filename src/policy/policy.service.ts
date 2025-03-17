@@ -18,7 +18,7 @@ export class PolicyService {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-  ) {}
+  ) { }
 
   async init() {
     await this.initEnforcer();
@@ -28,7 +28,12 @@ export class PolicyService {
   private async initEnforcer() {
     const a = await TypeORMAdapter.newAdapter(
       {
-        connection: this.dataSource,
+        type: 'mysql',
+        host: 'localhost',
+        port: 3306,
+        username: 'root',
+        password: 'root',
+        database: 'nestjs-admin-tpl',
       },
       {
         customCasbinRuleEntity: Policy,

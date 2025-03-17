@@ -12,7 +12,7 @@ import { IRolesService } from '@app/roles/roles.service.interface';
 
 @Injectable()
 export class RolesService
-  extends BaseService<Role, bigint>
+  extends BaseService<Role>
   implements IRolesService
 {
   constructor(

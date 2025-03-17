@@ -1,13 +1,12 @@
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 
-import type { Milliseconds } from 'cache-manager';
 
 @Injectable()
 export class CacheService {
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
-  async set(key: string, value: any, ttl: Milliseconds = 0) {
+  async set(key: string, value: any, ttl = 0) {
     return this.cacheManager.set(key, value, ttl);
   }
 
@@ -19,7 +18,7 @@ export class CacheService {
     return this.cacheManager.del(key);
   }
 
-  async reset() {
-    return this.cacheManager.reset();
+  async clear() {
+    return this.cacheManager.clear();
   }
 }

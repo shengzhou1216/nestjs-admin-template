@@ -18,8 +18,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "typeRoots": [
+      "./src/types/*"
+    ],
     "paths": {
-      "@app/*": ["src/*"],
+      "@app/*": [
+        "src/*"
+      ],
     },
   },
 }

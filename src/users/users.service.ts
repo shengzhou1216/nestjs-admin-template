@@ -25,7 +25,7 @@ import { UserInfoVo } from '@app/users/vo/user-info.vo';
 
 @Injectable()
 export class UsersService
-  extends BaseService<User, bigint>
+  extends BaseService<User>
   implements IUserService
 {
   private readonly logger = new Logger(UsersService.name);
