@@ -13,6 +13,10 @@ export const validationSchema = Joi.object().keys({
   system: Joi.object().keys({
     host: Joi.string().default('localhost').description('System host'),
     port: Joi.number().default(3000).description('System port'),
+    initAdmin: Joi.object().keys({
+      username: Joi.string().optional().default('admin').description('Admin username'),
+      password: Joi.string().optional().default('admin').description('Admin password'),
+    }),
   }),
   db: Joi.object().keys({
     postgres: Joi.object().keys({

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -22,12 +23,13 @@ import { SetUserRolesDto } from '@app/users/dto/set-user-roles.dto';
 import { User } from '@app/users/user.entity';
 import { IUserService } from '@app/users/users.service.interface';
 import { UserInfoVo } from '@app/users/vo/user-info.vo';
+import { ConfigService } from '@nestjs/config';
+import SystemConfig from '@app/config/system.config';
 
 @Injectable()
 export class UsersService
   extends BaseService<User>
-  implements IUserService
-{
+  implements IUserService {
   private readonly logger = new Logger(UsersService.name);
 
   constructor(
@@ -35,6 +37,7 @@ export class UsersService
     private readonly roleService: RolesService,
     @InjectDataSource() private readonly dataSource: DataSource,
     private readonly policyService: PolicyService,
+    private readonly configService: ConfigService,
   ) {
     super(repository);
   }
@@ -154,18 +157,16 @@ export class UsersService
   async initAdmin() {
     try {
       await this.dataSource.transaction(async (manager) => {
-        // 判断是否存在管理员角色
         let adminRole = await manager.getRepository(Role).findOneBy({
           label: Constants.ADMIN_ROLE_LABEL,
         });
         if (!adminRole) {
           adminRole = await manager.getRepository(Role).save({
-            name: '管理员',
+            name: 'Admin',
             label: Constants.ADMIN_ROLE_LABEL,
-            description: '拥有所有权限',
+            description: 'Admin role with all permissions',
           });
         }
-        // 判断是否存在管理员用户
         const exists = await manager
           .getRepository(User)
           .createQueryBuilder('user')
@@ -176,20 +177,21 @@ export class UsersService
         if (exists) {
           return;
         }
+        const initAdmin = this.configService.get<SystemConfig['initAdmin']>('system.initAdmin');
         let admin = await manager.getRepository(User).findOneBy({
-          username: 'admin',
+          username: initAdmin.username,
         });
         if (!admin) {
-          // 创建管理员用户
-          const password = RandUtil.generatePassword();
-          this.logger.log(`Admin password: ${password}. Please change it!`);
+          const salt = SaltUtil.generateSalt();
+          const password = SaltUtil.hashPassword(initAdmin.password, salt);
           admin = await manager.getRepository(User).save({
-            username: 'admin',
-            password: password,
-            email: 'admin@nat.com',
+            username: initAdmin.username,
+            password,
+            salt,
+            email: `${initAdmin.username}@nat.com`,
           } as User);
+          this.logger.log(`Admin ${initAdmin.username} created!`);
         }
-        // 设置管理员角色
         admin.roles = [adminRole];
         await manager.getRepository(User).save(admin);
       });

@@ -3,6 +3,10 @@ system:
   host: localhost
   port: 3000
 
+  initAdmin:
+    username: admin
+    password: Aa123456
+
 db:
   postgres:
     host: localhost
