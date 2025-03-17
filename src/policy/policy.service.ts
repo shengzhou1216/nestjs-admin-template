@@ -47,7 +47,7 @@ export class PolicyService {
 
   private async initPolicy() {
     this.logger.log('Initializing policy ...');
-    // 获取所有的用户 + 角色关系
+    // get all user + role relations
     const users = await this.dataSource
       .getRepository(User)
       .createQueryBuilder()

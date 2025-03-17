@@ -44,6 +44,6 @@ export class PermissionGuard implements CanActivate {
     } catch (e) {
       this.logger.error(e.stack);
     }
-    throw new ForbiddenException('无权限访问');
+    throw new ForbiddenException('No permission to access');
   }
 }

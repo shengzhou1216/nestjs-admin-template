@@ -54,7 +54,7 @@ export class RolesService
     if (!role) {
       throw new NotFoundException('Role not found');
     }
-    // 检查权限是否存在
+    // check if permissions exist
     const permissions = await this.permissionService.findByIds(permissionIds);
     if (permissions.length !== permissionIds.length) {
       throw new NotFoundException('Some permissions not found');
