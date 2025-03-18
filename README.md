@@ -25,4 +25,6 @@ $ pnpm run start:prod
 - [Jwt](https://github.com/nestjs/jwt)
 - [Casbin](https://casbin.org/)
 - [winston](https://github.com/gremo/nest-winston)
+- [swagger](https://www.npmjs.com/package/@nestjs/swagger)
+- [TypeORM](https://www.npmjs.com/package/@nestjs/typeorm)
 - Permission annotation
